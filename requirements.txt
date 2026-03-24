@@ -1,0 +1,6 @@
+streamlit
+scikit-fuzzy
+numpy
+matplotlib
+scipy
+networkx

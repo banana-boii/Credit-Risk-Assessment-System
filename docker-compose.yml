@@ -1,0 +1,10 @@
+services:
+  credit-risk-app:
+    build: .
+    container_name: credit_risk_container
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app  #enables hot-reloading
+    environment:
+      - PYTHONUNBUFFERED=1
