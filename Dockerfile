@@ -8,7 +8,8 @@ WORKDIR /app
 COPY requirements.txt .
 
 #Install the Python packages
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt
 
 #Copy rest of project files into the container
 COPY . .

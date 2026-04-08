@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
+import plotly.graph_objects as go
 
 # --- 1. STREAMLIT UI SETUP ---
 st.title("🏦 AI Credit Risk Assessment System")
@@ -68,9 +69,38 @@ try:
     risk_simulation.compute()
     final_score = risk_simulation.output['risk']
     
-    st.metric(label="Calculated Risk Score", value=f"{final_score:.1f} / 100")
+    #Plotly Gauge Chart
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number",
+        value=final_score,
+        domain={'x': [0, 1], 'y': [0, 1]},
+        title={'text': "Credit Risk Score", 'font': {'size': 24}},
+        gauge={
+            'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': "darkblue"},
+            'bar': {'color': "black"},
+            'bgcolor': "white",
+            'borderwidth': 2,
+            'bordercolor': "gray",
+            'steps': [
+                {'range': [0, 40], 'color': "#71F055"},  
+                {'range': [40, 70], 'color': "#f6fc42"},  
+                {'range': [70, 100], 'color': "#ee5561"}  
+            ]
+        }
+    ))
+
+    # Shock Absorber 
+    # smooth 500ms glide
+    fig.update_layout(
+        transition={'duration': 500, 'easing': 'cubic-in-out'},
+        margin=dict(l=20, r=20, t=50, b=20),
+        height=350
+    )
+
+    # render
+    st.plotly_chart(fig, use_container_width=True)
     
-    # Simple UI feedback based on the score
+    # text feedback 
     if final_score < 40:
         st.success("✅ Low Risk: Loan Candidate Looks Solid")
     elif final_score < 70:
@@ -79,5 +109,4 @@ try:
         st.error("❌ High Risk: Strongly Consider Rejecting")
         
 except (ValueError, KeyError):
-    # This safely catches both types of "Missing Rule" errors
     st.info("💡 Move the sliders! The current combination isn't covered by our logic rules yet.")

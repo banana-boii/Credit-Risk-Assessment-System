@@ -8,3 +8,4 @@ services:
       - .:/app  #enables hot-reloading
     environment:
       - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
