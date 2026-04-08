@@ -18,27 +18,27 @@ It also includes an **Enterprise Batch Processing** module, allowing managers to
 
 ## 📸 Application Features & Screenshots
 
-![main page]("sc/main_page.png")
-![reasoning]("sc/reasoning.png")
-![developer_mode]("sc/developer_mode.png")
-![csv1]("sc/csv1.png")
-![csv2]("sc/csv2.png")
+![main page](sc/main_page.png)
+![reasoning](sc/reasoning.png)
+![developer_mode](sc/developer_mode.png)
+![csv1](sc/csv1.png)
+![csv2](sc/csv2.png)
 
 ### The Executive Dashboard
 ![Executive Dashboard](sc/main_page.png)
 *Real-time risk evaluation using dynamic Plotly gauge charts for single-applicant assessment.*
 
 ### Enterprise Batch Processing & Drill-Down
-![csv1]("sc/csv1.png")
-![csv2]("sc/csv2.png")
+![csv1](sc/csv1.png)
+![csv2](sc/csv2.png)
 *Scalable "Overview-to-Drill-Down" UI. Ingests CSV data, bypasses encoding errors, and categorizes applicants into Safe, Moderate, and High-Risk tabs. Managers can expand individual applicants to view isolated, dynamically generated defuzzification graphs.*
 
 ### Explainable AI (XAI) Logic
-![reasoning]("sc/reasoning.png")
+![reasoning](sc/reasoning.png)
 *Transparent breakdown of how the inference engine translated crisp inputs into fuzzy sets and calculated the final centroid.*
 
 ### Mathematical Visualizer (Developer Mode)
-![developer_mode]("sc/developer_mode.png")
+![developer_mode](sc/developer_mode.png)
 *Real-time rendering of active rule clipping, overlapping input matrices, and center of gravity calculations.*
 
 ## 🚀 How to Run Locally
