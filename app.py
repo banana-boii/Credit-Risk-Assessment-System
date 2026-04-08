@@ -3,6 +3,7 @@ import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 import plotly.graph_objects as go
+import matplotlib.pyplot as plt
 
 # --- 1. STREAMLIT UI SETUP ---
 st.title("🏦 AI Credit Risk Assessment System")
@@ -107,6 +108,64 @@ try:
         st.warning("⚠️ Moderate Risk: Requires Manual Review")
     else:
         st.error("❌ High Risk: Strongly Consider Rejecting")
+
+    with st.expander("Reasoning (Explainable AI)"):
+        st.write("The Inference Engine evaluated the following crisp inputs against the fuzzy rule matrix:")
         
+        # We calculate the fuzzy membership of the user's exact inputs
+        inc_level = "High" if in_income > 80 else "Low" if in_income < 40 else "Medium"
+        debt_level = "High" if in_debt > 60 else "Low" if in_debt < 30 else "Medium"
+        cred_level = "Excellent" if in_credit > 700 else "Poor" if in_credit < 550 else "Fair"
+        
+        st.markdown(f"""
+        * **Income ({in_income}k):** Classified primarily as **{inc_level}**
+        * **Debt Ratio ({in_debt}%):** Classified primarily as **{debt_level}**
+        * **Credit Score ({in_credit}):** Classified primarily as **{cred_level}**
+        """)
+        
+        st.write(f"Based on the Center of Gravity (Centroid) defuzzification, the aggregated rules resulted in a final crisp output of **{final_score:.1f}**.")
+    
+    st.divider()
+    dev_mode = st.toggle("Developer Mode (Show Math Graphs)")
+
+    if dev_mode:
+        st.subheader("Fuzzification & Defuzzification Visualizer")
+
+        #Plotting the Input Memberships
+        st.markdown("#### 1. Input Fuzzy Sets (Fuzzification)")
+        col1, col2, col3 = st.columns(3)
+
+        #let scikit-fuzzy draw, we grab it, resize it, send it to Streamlit, then wipe the canvas for next plot.
+        with col1:
+            income.view(sim=risk_simulation) 
+            fig_inc = plt.gcf() 
+            fig_inc.set_size_inches(5, 3) 
+            st.pyplot(fig_inc) 
+            plt.close() 
+
+        with col2:
+            debt.view(sim=risk_simulation)
+            fig_debt = plt.gcf()
+            fig_debt.set_size_inches(5, 3)
+            st.pyplot(fig_debt)
+            plt.close()
+
+        with col3:
+            credit_history.view(sim=risk_simulation) 
+            fig_cred = plt.gcf()
+            fig_cred.set_size_inches(5, 3)
+            st.pyplot(fig_cred)
+            plt.close()
+
+        # Plotting the Aggregated Output
+        st.markdown("#### 2. The Inference Engine (Aggregated Output)")
+        st.write("This graph shows how your active rules clipped the Risk triangles, and the thick black line represents the final **Center of Gravity (Centroid)**.")
+
+        risk.view(sim=risk_simulation) # Pass the simulation to show the active math
+        fig_risk = plt.gcf()
+        fig_risk.set_size_inches(10, 4)
+        st.pyplot(fig_risk)
+        plt.close()
+
 except (ValueError, KeyError):
     st.info("💡 Move the sliders! The current combination isn't covered by our logic rules yet.")
